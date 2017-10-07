@@ -1,0 +1,54 @@
+{
+  "sessions": [
+    {
+      "id": "56181931:56181931",
+      "data": {
+        "counter": 22,
+        "icos": [
+          {
+            "startTime": "23",
+            "endTime": "23",
+            "icoName": "🤳 Manage Members",
+            "currency": "BTC",
+            "maxCap": "23"
+          },
+          {
+            "icoName": "sad",
+            "currency": "BTC",
+            "maxCap": "12",
+            "startTime": "12",
+            "endTime": "12"
+          },
+          {
+            "icoName": "aslda",
+            "currency": "ETH",
+            "maxCap": "2342",
+            "startTime": "12/12/1212",
+            "endTime": "12/31/1231"
+          }
+        ],
+        "membership": [
+          {
+            "name": "collin"
+          },
+          {
+            "name": "vasya"
+          },
+          {
+            "name": "vasya"
+          },
+          {
+            "name": "vasya"
+          },
+          {
+            "name": "vasyadsfsf"
+          },
+          {
+            "name": "vasyadsfsf"
+          }
+        ],
+        "_flow": {}
+      }
+    }
+  ]
+}
