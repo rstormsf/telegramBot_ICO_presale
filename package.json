@@ -9,12 +9,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cli-table": "^0.3.1",
     "debug": "^3.1.0",
     "firebase-admin": "^5.3.0",
-    "moment": "^2.18.1",
+    "moment": "^2.19.1",
     "telegraf": "^3.11.1",
     "telegraf-flow": "^8.2.2",
     "telegraf-session-firebase": "^0.0.1",
     "telegraf-session-local": "^0.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
   }
 }
