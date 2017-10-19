@@ -20,9 +20,14 @@ async function isAdmin(from) {
     const admins = await database.ref(`sessions/admins/${from}/status`).once('value');
     return admins.val();
 }
+
+async function login(from){
+    database.ref(`sessions/logins/${from.username}/`).set({...from, lastTime: Date.now()});
+}
 app.command('start', async ({ session, reply, from }) => {
     console.log(from);
     let isUserAdmin = await isAdmin(from.username);
+    login(from);
     return reply('Hi there, please choose an option', Markup
         .keyboard([
             ['🔍 ICO Deals', '😎 Almost Closed <1hr'], // Row1 with 2 buttons
@@ -36,20 +41,17 @@ app.command('start', async ({ session, reply, from }) => {
 })
 
 const createICO = require('./wizards/createICO');
-const newS = require('./wizards/newS');
 const ico_deals = require('./wizards/ico_deals');
 const manage_members = require('./wizards/manage_members');
 const { WizardScene, enter } = TelegrafFlow
 const flow = new TelegrafFlow();
 flow.register(createICO)
-// flow.register(ico_deals)
-// flow.register(manage_members)
-// flow.register(newS)
+flow.register(ico_deals)
+flow.register(manage_members)
 
 
 
 app.use(flow.middleware())
-app.hears('/stats', ({ reply, session, from }) => reply(`${session.icos} messages from ${from.username}`))
 
 app.hears('👥 Add ICO', ({ session, flow }) => {
     console.log(session);
@@ -65,21 +67,6 @@ app.hears('🔍 ICO Deals', enter('ico-deals'))
 app.hears('🤳 Manage Members', ({ reply }) => {
     reply('/manageMembers')
 })
-// bot.hears('/stats', ({ reply, session, from }) => reply(`${session.counter} messages from ${from.username}`))
 
 app.command('/manageMembers', enter('manage-members'))
-app.command('/test', (ctx) => {
-    ctx.reply('sdf',
-        Extra.HTML().markup((m) => {
-            console.log(m);
-            // return m.button('sdfsd');
-            return m.inlineKeyboard([
-                // m.button('sdfsdf'),
-                m.urlButton('❤️', 'http://telegraf.js.org'),
-                m.callbackButton('Yes', 'Yes'),
-                m.callbackButton('No', 'No'),
-            ])
-        }
-        ))
-})
 app.startPolling()
