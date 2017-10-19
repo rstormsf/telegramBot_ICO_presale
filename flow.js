@@ -35,7 +35,7 @@ async function login(from) {
     database.ref(`sessions/logins/${from.username}/`).set({ ...from, lastTime: Date.now() });
 }
 app.command('start', async ({ session, reply, from }) => {
-    console.log(from);
+    session._flow = null;
     let isUserAdmin = await isAdmin(from.username);
     login(from);
     return reply('Hi there, please choose an option', Markup
@@ -63,9 +63,7 @@ app.use(flow.middleware())
 
 app.hears('👥 Add ICO', ({ session, flow }) => {
     console.log(session);
-    if (session._flow) {
-        session._flow._state = null;
-    }
+    session._flow = null;
     if (!session.icos) {
         session.icos = { "INITIALIZED": true }
     }
