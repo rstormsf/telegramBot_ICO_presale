@@ -62,7 +62,7 @@ const createICO = new WizardScene('create-ico',
 },
 // STEP 4
 (ctx) => {
-    if(!ctx.flow.state.startTime){
+    if(!ctx.flow.state.startTime && ctx.message){
         let startTime = moment.utc(ctx.message.text, "MM-DD-YYYY HH:mm")
         if(startTime.toString() !== 'Invalid date'){
             ctx.flow.state.startTime = startTime.format();
@@ -78,7 +78,7 @@ const createICO = new WizardScene('create-ico',
 },
 // STEP 5
 (ctx) => {
-    if(!ctx.flow.state.endTime){
+    if(!ctx.flow.state.endTime && ctx.message){
         let endTime = moment.utc(ctx.message.text, "MM-DD-YYYY HH:mm")
         if(endTime.toString() !== 'Invalid date' && endTime.isAfter(ctx.flow.state.startTime)) {
             ctx.flow.state.endTime = endTime.format();
