@@ -6,6 +6,8 @@ const debug = require('debug')('app:app')
 const { Extra, Markup } = require('telegraf')
 if(process.env.DEVELOPMENT) {
     require("dotenv-json")();
+} else {
+    require('dotenv').config();
 }
 
 admin.initializeApp({
