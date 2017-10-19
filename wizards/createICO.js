@@ -2,7 +2,11 @@ const TelegrafFlow = require('telegraf-flow')
 const { WizardScene, enter } = TelegrafFlow;
 const { Extra, Markup } = require('telegraf')
 const moment = require('moment')
+var toType = function(obj) {
+    return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+  }
 const createICO = new WizardScene('create-ico',
+
 // STEP 0
 (ctx) => {
     ctx.replyWithMarkdown('Lets create an ICO, Please provide the name for your ICO:');
@@ -18,6 +22,7 @@ const createICO = new WizardScene('create-ico',
         ctx.flow.wizard.selectStep(0);
         return ctx.flow.reenter('create-ico');
     }
+    console.log('icoName', toType(icoName), icoName.length);
     ctx.flow.state.icoName = icoName;
     if(ctx.session.icos[icoName] ) {
         ctx.replyWithMarkdown(`*Name already exists*
@@ -36,11 +41,11 @@ const createICO = new WizardScene('create-ico',
 },
 // STEP 2
 (ctx) => {
-    if (!ctx.flow.state.currency || ctx.message && ctx.message.text.length > 0) {
+    if (ctx.message && !ctx.flow.state.currency && ctx.message.text.length > 0) {
         ctx.flow.wizard.selectStep(1);
         return ctx.flow.reenter('create-ico');
     } else {
-        if(!ctx.flow.state.currency && ctx.message){
+        if(!ctx.flow.state.currency && ctx.callbackQuery){
             ctx.flow.state.currency = ctx.callbackQuery.data;
         }
         ctx.reply(`Max Cap in ${ctx.flow.state.currency}`)
@@ -49,7 +54,7 @@ const createICO = new WizardScene('create-ico',
 },
 // STEP 3
 (ctx) => {
-    if (!ctx.flow.state.maxCap || ctx.message && !Number.isInteger(Number(ctx.message.text))) {
+    if (!ctx.message || !ctx.flow.state.maxCap && !Number.isInteger(Number(ctx.message.text))) {
         ctx.flow.wizard.selectStep(2);
         return ctx.flow.reenter('create-ico');
     } else {
@@ -62,7 +67,7 @@ const createICO = new WizardScene('create-ico',
 },
 // STEP 4
 (ctx) => {
-    if(!ctx.flow.state.startTime && ctx.message){
+    if(ctx.message && !ctx.flow.state.startTime){
         let startTime = moment.utc(ctx.message.text, "MM-DD-YYYY HH:mm")
         if(startTime.toString() !== 'Invalid date'){
             ctx.flow.state.startTime = startTime.format();
