@@ -1,10 +1,7 @@
 const TelegrafFlow = require('telegraf-flow')
 const { WizardScene, enter } = TelegrafFlow;
 const { Extra, Markup } = require('telegraf')
-const LocalSession = require('telegraf-session-local')
 
-
-let membersCount = 0;
 const manageMembers = new WizardScene('manage-members',
     (ctx) => {
         if (ctx.session.members && ctx.session.members.length) {
@@ -20,7 +17,7 @@ const manageMembers = new WizardScene('manage-members',
 
     },
     (ctx) => {
-        ctx.reply(`Please provide telegram handle without. Example: collin `);
+        ctx.reply(`Please provide telegram handle without. Example: rstormsf `);
         if(ctx.callbackQuery.data === 'Add'){
             
         }

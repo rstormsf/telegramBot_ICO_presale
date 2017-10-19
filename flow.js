@@ -73,10 +73,10 @@ app.hears('👥 Add ICO', ({ session, flow }) => {
     }
     flow.enter('create-ico')
 })
-app.hears('🔍 ICO Deals', enter('ico-deals'))
-app.hears('🤳 Manage Members', ({ reply }) => {
-    reply('/manageMembers')
-})
+// app.hears('🔍 ICO Deals', enter('ico-deals'))
+// app.hears('🤳 Manage Members', ({ reply }) => {
+//     reply('/manageMembers')
+// })
 
-app.command('/manageMembers', enter('manage-members'))
+// app.command('/manageMembers', enter('manage-members'))
 app.startPolling()
