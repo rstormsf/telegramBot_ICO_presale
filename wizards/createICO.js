@@ -36,7 +36,7 @@ const createICO = new WizardScene('create-ico',
 },
 // STEP 2
 (ctx) => {
-    if (!ctx.flow.state.currency && ctx.message && ctx.message.text.length > 0) {
+    if (!ctx.flow.state.currency || ctx.message && ctx.message.text.length > 0) {
         ctx.flow.wizard.selectStep(1);
         return ctx.flow.reenter('create-ico');
     } else {
@@ -49,7 +49,7 @@ const createICO = new WizardScene('create-ico',
 },
 // STEP 3
 (ctx) => {
-    if (!ctx.flow.state.maxCap && ctx.message && !Number.isInteger(Number(ctx.message.text))) {
+    if (!ctx.flow.state.maxCap || ctx.message && !Number.isInteger(Number(ctx.message.text))) {
         ctx.flow.wizard.selectStep(2);
         return ctx.flow.reenter('create-ico');
     } else {
