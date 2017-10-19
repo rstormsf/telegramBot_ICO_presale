@@ -40,7 +40,7 @@ const createICO = new WizardScene('create-ico',
         ctx.flow.wizard.selectStep(1);
         return ctx.flow.reenter('create-ico');
     } else {
-        if(!ctx.flow.state.currency){
+        if(!ctx.flow.state.currency && ctx.message){
             ctx.flow.state.currency = ctx.callbackQuery.data;
         }
         ctx.reply(`Max Cap in ${ctx.flow.state.currency}`)
