@@ -4,18 +4,14 @@ const firebaseSession = require('telegraf-session-firebase')
 const admin = require('firebase-admin')
 const debug = require('debug')('app:app')
 const { Extra, Markup } = require('telegraf')
-if(process.env.DEVELOPMENT) {
-    require("dotenv-json")();
-} else {
-    require('dotenv').config();
-}
+require('dotenv').config();
 
 admin.initializeApp({
     credential: admin.credential.cert({
         type: process.env.type,
         project_id: process.env.project_id,
         private_key_id: process.env.private_key_id,
-        private_key: process.env.private_key,
+        private_key: JSON.parse(process.env.private_key),
         client_email: process.env.client_email,
         client_id: process.env.client_id,
         auth_uri: process.env.auth_uri,
