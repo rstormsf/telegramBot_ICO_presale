@@ -53,7 +53,7 @@ const createICO = new WizardScene('create-ico',
         ctx.flow.wizard.selectStep(2);
         return ctx.flow.reenter('create-ico');
     } else {
-        if(!ctx.flow.state.maxCap){
+        if(!ctx.flow.state.maxCap && ctx.message){
             ctx.flow.state.maxCap = ctx.message.text;
         }
         ctx.reply(`Start Date and Time in following format month/day/year hour:minute UTC time zone.\n Example: 12/31/2017 15:31`)
