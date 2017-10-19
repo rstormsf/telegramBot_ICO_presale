@@ -51,13 +51,11 @@ app.command('start', async ({ session, reply, from }) => {
 })
 
 const createICO = require('./wizards/createICO');
-// const ico_deals = require('./wizards/ico_deals');
-// const manage_members = require('./wizards/manage_members');
+
 const { WizardScene, enter } = TelegrafFlow
 const flow = new TelegrafFlow();
-// flow.register(createICO)
-// flow.register(ico_deals)
-// flow.register(manage_members)
+flow.register(createICO)
+
 
 
 
