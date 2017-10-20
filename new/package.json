@@ -1,0 +1,18 @@
+{
+  "name": "new",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "mongoose": "^4.12.3",
+    "telegraf": "^3.14.0",
+    "telegraf-logger": "^2.0.2",
+    "telegraf-session-redis": "^5.0.0"
+  }
+}
