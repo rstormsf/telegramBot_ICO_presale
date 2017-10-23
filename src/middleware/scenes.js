@@ -6,19 +6,15 @@ const { Extra, Markup } = require('telegraf');
 const { createUserById } = require('../helpers/db.js');
 const flow = new TelegrafFlow();
 
-
-
-// create a scene
 const start = new Scene('startScene');
 
-// define what happens when you enter scene
 start.enter(async (ctx) => {
   // await createUserById(ctx.from.id);
   isUserAdmin = true;
   ctx.reply('Hi there, please choose an option', Markup
     .keyboard([
-      ['🔍 ICO Deals', '😎 Almost Closed <1hr'], // Row1 with 2 buttons
-      ['☸ Participate', '⭐️ My balance', '📢 Check Tx'], // Row2 with 2 buttons
+      ['🔍 ICO Deals', '😎 Almost Closed <1hr'],
+      ['☸ Participate', '⭐️ My balance', '📢 Check Tx'],
       isUserAdmin ? ['📢 My syndicates', '🤳 Manage Members', '👥 Add ICO'] : []
     ])
     .oneTime()
@@ -28,7 +24,6 @@ start.enter(async (ctx) => {
   ctx.flow.leave();
 });
 
-// when /start is called, enter scene
 flow.command('start', async (ctx, next) => {
   await ctx.flow.enter('startScene')
 });

@@ -1,4 +1,4 @@
-const { WizardScene } = require('telegraf-flow')
+const { WizardScene, Scene} = require('telegraf-flow')
 const { Extra, Markup } = require('telegraf')
 // const moment = require('moment')
 // const axios = require('axios');
@@ -14,7 +14,6 @@ createICOScene.enter(async (ctx) => {
   ]).extra();
 
   await ctx.reply(text, extra);
-  ctx.flow.wizard.next()
 });
 
 // var toType = function(obj) {
