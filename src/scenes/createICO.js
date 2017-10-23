@@ -1,24 +1,20 @@
-const { Scene } = require('telegraf-flow')
+const { WizardScene } = require('telegraf-flow')
 const { Extra, Markup } = require('telegraf')
-const moment = require('moment')
-const axios = require('axios');
-const { findUserByIdAndUpdate } = require('../helpers/db');
+// const moment = require('moment')
+// const axios = require('axios');
+// const { findUserByIdAndUpdate } = require('../helpers/db');
 
-const createICOScene = new Scene('auth');
+const createICOScene = new Scene('createICO');
 
 createICOScene.enter(async (ctx) => {
-    const text = 'Let\'s create an ICO, Please provide the name for your ICO:';
-    const extra = Markup.inlineKeyboard([
-    Markup.switchToCurrentChatButton('Search...', ''),
+  const text = 'Let\'s create an ICO, Please provide the name for your ICO:';
+  const extra = Markup.inlineKeyboard([
+    Markup.switchToCurrentChatButton('Add Name...', ''),
     Markup.callbackButton('Cancel', 'CANCEL'),
   ]).extra();
 
-  if (ctx.callbackQuery) {
-    await ctx.editMessageText(text, extra);
-    return;
-  }
-
   await ctx.reply(text, extra);
+  ctx.flow.wizard.next()
 });
 
 // var toType = function(obj) {

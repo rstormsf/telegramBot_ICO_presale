@@ -1,28 +1,21 @@
 {
-  "name": "telegrambot",
+  "name": "new",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node flow.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "debug": "^3.1.0",
+    "axios": "^0.16.2",
     "dotenv": "^4.0.0",
-    "dotenv-json": "^1.0.0",
-    "firebase-admin": "^5.3.0",
-    "moment": "^2.19.1",
-    "telegraf": "^3.11.1",
-    "telegraf-flow": "^8.2.2",
-    "telegraf-session-firebase": "^0.0.1",
-    "telegraf-session-local": "^0.0.4"
-  },
-  "devDependencies": {
-    "nodemon": "^1.12.1"
-  },
-  "engines": {
-    "node": "8.4.0"
+    "fs": "0.0.1-security",
+    "mongoose": "^4.12.3",
+    "telegraf": "^3.14.0",
+    "telegraf-flow": "^8.3.0",
+    "telegraf-logger": "^2.0.2",
+    "telegraf-session-redis": "^5.0.0"
   }
 }
