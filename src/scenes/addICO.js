@@ -1,7 +1,7 @@
 const { WizardScene, Scene} = require('telegraf-flow');
 const { Extra, Markup } = require('telegraf');
 const moment = require('moment');
-const { findTokenByName, addToken } = require('../helpers/db');
+const { findTokenByName, addToken } = require('../database/token');
 
 var toType = function(obj) {
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
@@ -110,12 +110,12 @@ const addICOScene = new WizardScene('add-ico',
     } else {
       ctx.reply(`Please Confirm:
         Name: <b>${ctx.flow.state.icoName}</b>
-        Max Cap <b>${ctx.flow.state.maxCap} ${ctx.flow.state.currency}</b>
-        Start <b>${moment.utc(ctx.flow.state.startTime)
+        Max Cap: <b>${ctx.flow.state.maxCap} ${ctx.flow.state.currency}</b>
+        Start: <b>${moment.utc(ctx.flow.state.startTime)
         .format("dddd, MMMM Do YYYY, h:mm:ss a")} GMT</b>
-        End<b> ${moment.utc(ctx.flow.state.endTime)
+        End: <b>${moment.utc(ctx.flow.state.endTime)
         .format("dddd, MMMM Do YYYY, h:mm:ss a")} GMT</b>
-        Currency <b>${ctx.flow.state.currency}</b>`, 
+        Currency: <b>${ctx.flow.state.currency}</b>`, 
         Extra.HTML().markup((m) =>
           m.inlineKeyboard([
           m.callbackButton('Yes', 'Yes'),

@@ -7,7 +7,7 @@ const {
   getMembers, 
   getMemberCount,
   getMemberByName 
-} = require('../helpers/db');
+} = require('../database/member');
 
 const manageMembersScene = new WizardScene('manage-members',
   // Step 0

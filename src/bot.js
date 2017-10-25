@@ -36,16 +36,6 @@ bot.action('CANCEL', async (ctx) => {
   await ctx.editMessageText('Canceled');
 });
 
-bot.hears('apple', async (ctx) => {
-  return ctx.reply('If you are confused type /help');
-});
-
-bot.on('text', (ctx) => {
-  console.log(ctx.from.username);
-  console.log(ctx.flow.state);
-});
-
-
 bot.catch((e) => {
   console.log(e);
 });

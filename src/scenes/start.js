@@ -1,5 +1,5 @@
 const { Scene } = require('telegraf-flow')
-const { isAdmin } = require('../helpers/db');
+const { isAdmin } = require('../database/admin');
 const { Extra, Markup } = require('telegraf');
 
 const startScene = new Scene('start');

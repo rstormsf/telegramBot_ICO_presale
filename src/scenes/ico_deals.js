@@ -1,7 +1,7 @@
 const TelegrafFlow = require('telegraf-flow')
 const { WizardScene, enter } = TelegrafFlow;
 const { Extra, Markup } = require('telegraf')
-const { getSyndicateCount, getSyndicates } = require('../helpers/db');
+const { getSyndicateCount, getSyndicates } = require('../database/syndicate');
 
 const icoDealsScene = new WizardScene('ico-deals',
   async (ctx) => {

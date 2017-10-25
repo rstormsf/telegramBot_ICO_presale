@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   NODE_ENV: 'dev',
-  ICOBOT_TOKEN: '462248772:AAFkBFQnVDDDcFtJz7Y6yWRO-eDhoG25OPg',
-  PORT: 8443,
-  FIREBASE_URL: 'https://presalebot-54914.firebaseio.com',
+  ICOBOT_TOKEN: process.env.ICOBOT_TOKEN,
+  PORT: process.env.PORT,
+  FIREBASE_URL: process.env.FIREBASE_URL,
 };
