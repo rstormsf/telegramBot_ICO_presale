@@ -4,18 +4,18 @@ Deployment
 
 Install now
 
-  npm i -g --unsafe-perm now
+    npm i -g --unsafe-perm now
 
 Login now
 
-  now login
+    now login
 
 Go into directory and deploy
   
-  now
+    now
 
 Set Telegram Webhook
 
-  curl 'https://api.telegram.org/bot[bot_token]/setWebhook?url=[now_url]/:443/[bot_token]'
+    curl 'https://api.telegram.org/bot[bot_token]/setWebhook?url=[now_url]/:443/[bot_token]'
 
 Done
