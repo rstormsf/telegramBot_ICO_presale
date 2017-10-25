@@ -1,5 +1,5 @@
 const TelegrafFlow = require('telegraf-flow')
-const { WizardScene, enter } = TelegrafFlow;
+const { WizardScene } = TelegrafFlow;
 const { Extra, Markup } = require('telegraf')
 const { 
   addMember, 
