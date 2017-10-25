@@ -10,7 +10,7 @@ Login now
 
     now login
 
-Go into directory and deploy
+Deploy
   
     now
 
