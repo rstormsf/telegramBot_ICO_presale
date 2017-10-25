@@ -1,11 +1,11 @@
 const Telegraf = require('telegraf');
 const error = require('./middleware/error');
 const user = require('./middleware/user');
-const session = require('./middleware/session');
+const firebaseSession = require('telegraf-session-firebase');
 const logger = require('./middleware/logger');
 const scenes = require('./middleware/scenes');
 const { ICOBOT_TOKEN } = require('../config');
-require('./db');
+const { database } = require('./db');
 
 const bot = new Telegraf(ICOBOT_TOKEN, {
   telegram: {
@@ -26,7 +26,7 @@ setImmediate(async () => {
 
 bot.use(error);
 bot.use(user);
-bot.use(session);
+bot.use(firebaseSession(database.ref('sessions')));
 bot.use(logger);
 bot.use(scenes);
 

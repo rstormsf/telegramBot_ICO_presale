@@ -1,6 +1,6 @@
-const User = require('../models/user');
+const { login } = require('../helpers/db');
 
 module.exports = async (ctx, next) => {
-  ctx.user = await User.findById(ctx.from.id);
+  await login(ctx.from.username);
   await next();
 };
