@@ -1,5 +1,18 @@
 pragma solidity ^0.4.17;
 
+contract ERC20 {
+    function totalSupply() public view returns (uint supply);
+    function balanceOf( address who ) public view returns (uint value);
+    function allowance( address owner, address spender ) public view returns (uint _allowance);
+
+    function transfer( address to, uint value) public returns (bool ok);
+    function transferFrom( address from, address to, uint value) public returns (bool ok);
+    function approve( address spender, uint value ) public returns (bool ok);
+
+    event Transfer( address indexed from, address indexed to, uint value);
+    event Approval( address indexed owner, address indexed spender, uint value);
+}
+
 contract Presale {
     uint256 public startTime;
     uint256 public endTime;
@@ -14,13 +27,14 @@ contract Presale {
     }
     
     address public owner;
+    address public bot;
     
     function () payable {
         buy();
     }
     
     function Presale() {
-        owner = msg.sender;
+        bot = msg.sender;
     }
     
     function initialize(address _owner, uint256 _startTime, uint256 _endTime, uint256 _cap) {
@@ -31,7 +45,6 @@ contract Presale {
         cap = _cap;
         isInitialized = true;
     }
-    event Debug(uint a);
     
     function buy() public payable {
         require(msg.value > 0);
@@ -46,11 +59,19 @@ contract Presale {
         owner.transfer(_amount);
     }
     
-    function setExchangeRate(uint256 _rate) public onlyOwner {
+    function setExchangeRate(uint256 _rate) public {
+        require(msg.sender == bot || msg.sender == owner);
         rate = _rate;
     }
     
-    function withdraw() public onlyOwner {
-           
+    function claimTokens(address _token) public onlyOwner {
+        if (_token == 0x0) {
+            owner.transfer(this.balance);
+            return;
+        }
+    
+        ERC20 token = ERC20(_token);
+        uint256 balance = token.balanceOf(this);
+        token.transfer(owner, balance);
     }
 }
