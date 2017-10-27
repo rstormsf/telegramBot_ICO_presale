@@ -2,6 +2,7 @@ const { WizardScene, Scene} = require('telegraf-flow');
 const { Extra, Markup } = require('telegraf');
 const moment = require('moment');
 const { getICOByName, addICO } = require('../database/deal');
+const getFundBalance = require('../helpers/getFundBalance');
 
 var toType = function(obj) {
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
@@ -13,9 +14,15 @@ const addICOScene = new WizardScene('add-ico',
     ctx.flow.state.startTime = null;
     ctx.flow.state.endTime = null;
     ctx.flow.state.icoName = null;
-    await ctx.replyWithMarkdown('Lets add an ICO, Please' +
-      ' provide the name of the ICO:');
-    await ctx.flow.wizard.next()
+    fundBalance = await getFundBalance(ctx.from.username);
+    if (fundBalance == 0) {
+      await ctx.reply('Insufficient funds, please make a deposit to add an ICO');
+      ctx.flow.leave();
+    } else {
+      await ctx.replyWithMarkdown('Lets add an ICO, Please' +
+        ' provide the name of the ICO:');
+      await ctx.flow.wizard.next()
+    }
   },
   // STEP 1
   async (ctx) => {

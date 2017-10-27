@@ -18,7 +18,7 @@ const addFundsScene = new WizardScene('add-funds',
         await createFund(ctx.from.username);
       }
       const fundAddress = await getFundAddress(ctx.from.username);
-      const fundBalance = await getFundBalance(fundAddress);
+      const fundBalance = await getFundBalance(ctx.from.username);
       await ctx.reply(`Your current balance is ${fundBalance} eth\n\n` + 
         `Please send ether to:\n${fundAddress}`);
       ctx.flow.leave();
