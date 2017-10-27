@@ -1,7 +1,7 @@
 const { WizardScene, Scene} = require('telegraf-flow');
 const { Extra, Markup } = require('telegraf');
 const moment = require('moment');
-const { findTokenByName, addToken } = require('../database/token');
+const { getICOByName, addICO } = require('../database/deal');
 
 var toType = function(obj) {
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
@@ -28,7 +28,7 @@ const addICOScene = new WizardScene('add-ico',
     if (ctx.message) {
       let icoName;
       icoName = ctx.message.text;
-      query = await findTokenByName(ctx.from.username, icoName);
+      query = await getICOByName(ctx.from.username, icoName);
       console.log(query.val());
       if (query.val()) {
         await ctx.replyWithMarkdown(`*${icoName}* already added`)
@@ -130,7 +130,7 @@ const addICOScene = new WizardScene('add-ico',
       if (ctx.callbackQuery && ctx.callbackQuery.data === 'Yes'){
         const { icoName, currency, maxCap, startTime, endTime } = ctx.flow.state;
         try {
-          ret = await addToken(
+          ret = await addICO(
             ctx.from.username, 
             icoName, 
             currency, 
