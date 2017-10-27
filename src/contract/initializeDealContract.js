@@ -19,7 +19,7 @@ async function initializeDealContract(username, icoName, contractAddress) {
     ownerAddress, 
     startTime, 
     endTime, 
-    icoData['maxCap']
+    web3.toWei(icoData['maxCap'], 'ether')
   );
   let gasEstimate = await instance.estimateGas();
   data = instance.encodeABI();
@@ -28,7 +28,7 @@ async function initializeDealContract(username, icoName, contractAddress) {
       to: contractAddress,
       nonce: web3.utils.toHex(txcount),
       gasPrice: web3.utils.toHex(1000099000),
-      gasLimit: gasEstimate * 3,
+      gasLimit: 6700000,
       data: data
     }
   var tx = new Tx(rawTx);

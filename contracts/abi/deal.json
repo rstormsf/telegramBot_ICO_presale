@@ -2,6 +2,20 @@
   {
     "constant": true,
     "inputs": [],
+    "name": "bot",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
     "name": "rate",
     "outputs": [
       {
@@ -152,6 +166,20 @@
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_token",
+        "type": "address"
+      }
+    ],
+    "name": "claimTokens",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -161,17 +189,5 @@
     "payable": true,
     "stateMutability": "payable",
     "type": "fallback"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "a",
-        "type": "uint256"
-      }
-    ],
-    "name": "Debug",
-    "type": "event"
   }
 ]

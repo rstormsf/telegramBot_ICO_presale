@@ -3,8 +3,8 @@ const { Extra, Markup } = require('telegraf');
 const moment = require('moment');
 const { getICOByName, addICO, setContractAddress } = require('../database/deal');
 const getFundBalance = require('../helpers/getFundBalance');
-const deployDealContract = require('../helpers/deployContract');
-const initializeDealContract = require('../helpers/initializeContract');
+const deployDealContract = require('../contract/deployDealContract');
+const initializeDealContract = require('../contract/initializeDealContract');
 
 var toType = function(obj) {
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
@@ -147,11 +147,9 @@ const addICOScene = new WizardScene('add-ico',
         );
         await ctx.reply('Deploying Contract...')
         const contractAddress = await deployDealContract(ctx.from.username);
-        // console.log('address: ' + contractAddress);
         await setContractAddress(ctx.from.username, icoName, contractAddress);
         let receipt = await initializeDealContract(ctx.from.username, icoName, contractAddress);
         await ctx.reply('Your contract has been deployed at ' + contractAddress);
-        await console.log(receipt)
       } else {
         await ctx.reply(`Your ICO was not added`)
       }

@@ -29,15 +29,15 @@ contract Presale {
     address public owner;
     address public bot;
     
-    function () payable {
+    function () payable public {
         buy();
     }
     
-    function Presale() {
+    function Presale() public {
         bot = msg.sender;
     }
     
-    function initialize(address _owner, uint256 _startTime, uint256 _endTime, uint256 _cap) {
+    function initialize(address _owner, uint256 _startTime, uint256 _endTime, uint256 _cap) public {
         require(!isInitialized);
         owner = _owner;
         startTime = _startTime;

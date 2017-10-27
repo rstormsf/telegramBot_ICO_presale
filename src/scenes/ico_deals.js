@@ -15,15 +15,17 @@ const icoDealsScene = new WizardScene('ico-deals',
     console.log(syndicateList);
     let msg = `Currently you are a member of ${syndicateCount} syndicate(s)\n`;
     if (syndicateCount > 0) {
-      ctx.reply(`${msg}Syndicates:\n` + syndicateList.join(", "));
+      // ctx.reply(`${msg}Syndicates:\n` + syndicateList.join(", "));
       // keyboard mapping not working
-      // ctx.reply(`Please select a syndicate`, Extra.HTML().markup((m) => {
-      //   let syndicates = syndicateList.map(({ name }) => {
-      //     return m.callbackButton(name, name)
-      //   })
-      //   return m.inlineKeyboard(syndicates);
-      // }));
-      // ctx.flow.wizard.next();
+      ctx.reply(`Please select a syndicate`, Extra.HTML().markup((m) => {
+        // let syndicates = syndicateList.map(({ name }) => {
+        //   return m.callbackButton(name, name)
+        // })
+        return m.inlineKeyboard(syndicateList.map((name) => {
+          return m.callbackButton(name, name)
+        }));
+      }));
+      ctx.flow.wizard.next();
     } else {
       ctx.reply(`Please join a syndicate in order to participate`);
       ctx.flow.leave()
