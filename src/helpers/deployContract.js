@@ -1,9 +1,5 @@
 var Tx = require('ethereumjs-tx');
-var Web3 = require('web3');
-let KOVAN_RPC_URL = 'https://kovan.infura.io/metamask';
-let parity = 'http://localhost:8549'
-let provider = new Web3.providers.HttpProvider(KOVAN_RPC_URL);
-let web3 = new Web3(provider);
+const { web3 } = require('../w3');
 
 async function deployDealContract(username, dealName) {
   const fundAddress = await getFundAddress(username);

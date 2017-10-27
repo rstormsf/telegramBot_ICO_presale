@@ -15,7 +15,7 @@ const addICOScene = new WizardScene('add-ico',
     ctx.flow.state.endTime = null;
     ctx.flow.state.icoName = null;
     fundBalance = await getFundBalance(ctx.from.username);
-    if (fundBalance == 0) {
+    if (fundBalance < 0.1) {
       await ctx.reply('Insufficient funds, please make a deposit to add an ICO');
       ctx.flow.leave();
     } else {

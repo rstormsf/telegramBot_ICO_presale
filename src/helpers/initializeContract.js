@@ -1,7 +1,5 @@
-var Web3 = require('web3');
-let KOVAN_RPC_URL = 'https://kovan.infura.io/metamask';
-let provider = new Web3.providers.HttpProvider(KOVAN_RPC_URL);
-let web3 = new Web3(provider);
+const { web3 } = require('../w3');
+var Tx = require('ethereumjs-tx');
 var abi = require('../../contracts/abi/deal.json');
 const { getAccountAddress } = require('../database/linkAccount');
 const { getFundAddress, getFundPrivateKey } = require('../database/fund');
