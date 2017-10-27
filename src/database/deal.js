@@ -1,10 +1,11 @@
 const { database } = require('../db');
 
-function getICOByName(admin, tokenName) {
-  return database.ref(`admins/${admin}/ICO/${ICOName}`).once('value');
+async function getICOByName(admin, ICOName) {
+  let data = await database.ref(`admins/${admin}/ICO/${ICOName}`).once('value');
+  return data.val();
 }
 
-function addICO(admin, tokenName, currency, maxCap, startTime, endTime) {
+function addICO(admin, ICOName, currency, maxCap, startTime, endTime) {
   return database.ref(`admins/${admin}/ICO/${ICOName}`).set({
     currency: currency,
     maxCap: maxCap,
@@ -13,7 +14,12 @@ function addICO(admin, tokenName, currency, maxCap, startTime, endTime) {
   })
 }
 
+function setContractAddress(admin, ICOName, address) {
+  return database.ref(`admins/${admin}/ICO/${ICOName}/contractAddress`).set(address);
+}
+
 module.exports = {
   addICO,
   getICOByName,
+  setContractAddress
 };

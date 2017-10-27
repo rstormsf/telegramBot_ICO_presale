@@ -1,8 +1,10 @@
 const { WizardScene, Scene} = require('telegraf-flow');
 const { Extra, Markup } = require('telegraf');
 const moment = require('moment');
-const { getICOByName, addICO } = require('../database/deal');
+const { getICOByName, addICO, setContractAddress } = require('../database/deal');
 const getFundBalance = require('../helpers/getFundBalance');
+const deployDealContract = require('../helpers/deployContract');
+const initializeDealContract = require('../helpers/initializeContract');
 
 var toType = function(obj) {
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
@@ -35,9 +37,8 @@ const addICOScene = new WizardScene('add-ico',
     if (ctx.message) {
       let icoName;
       icoName = ctx.message.text;
-      query = await getICOByName(ctx.from.username, icoName);
-      console.log(query.val());
-      if (query.val()) {
+      let query = await getICOByName(ctx.from.username, icoName);
+      if (query) {
         await ctx.replyWithMarkdown(`*${icoName}* already added`)
         await ctx.flow.wizard.selectStep(0);
         await ctx.flow.reenter('add-ico');
@@ -134,24 +135,23 @@ const addICOScene = new WizardScene('add-ico',
   },
   // Step 6
   async (ctx) => {
-      if (ctx.callbackQuery && ctx.callbackQuery.data === 'Yes'){
+      if (ctx.callbackQuery && ctx.callbackQuery.data === 'Yes') {
         const { icoName, currency, maxCap, startTime, endTime } = ctx.flow.state;
-        try {
-          ret = await addICO(
-            ctx.from.username, 
-            icoName, 
-            currency, 
-            maxCap, 
-            startTime, 
-            endTime
-          );
-          ret = await ret.once('value');
-          data = await ret.val(); 
-          console.log(data);
-        } catch (e) {
-          console.log('error');
-        }
-        await ctx.reply('ICO saved')
+        await addICO(
+          ctx.from.username, 
+          icoName, 
+          currency, 
+          maxCap, 
+          startTime, 
+          endTime
+        );
+        await ctx.reply('Deploying Contract...')
+        const contractAddress = await deployDealContract(ctx.from.username);
+        // console.log('address: ' + contractAddress);
+        await setContractAddress(ctx.from.username, icoName, contractAddress);
+        let receipt = await initializeDealContract(ctx.from.username, icoName, contractAddress);
+        await ctx.reply('Your contract has been deployed at ' + contractAddress);
+        await console.log(receipt)
       } else {
         await ctx.reply(`Your ICO was not added`)
       }

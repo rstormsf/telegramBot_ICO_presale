@@ -1,19 +1,19 @@
 const { database } = require('../db');
 
-async function isAccountLinked(user) {
-  const data = await database.ref(`users/${user}/address`).once('value');
+async function isAccountLinked(username) {
+  const data = await database.ref(`users/${username}/address`).once('value');
   return (data.val() === null) ? false : true;
 }
 
-async function linkAddressToAccount(user, eth_address) {
-  await database.ref(`users/${user}/address`).set({
+async function linkAddressToAccount(username, eth_address) {
+  await database.ref(`users/${username}/address`).set({
     address: eth_address,
   });
 }
 
-async function getAccountAddress(user) {
+async function getAccountAddress(username) {
   const data = await database.ref(`users/${username}/address`).once('value');
-  return data.val();
+  return data.val()['address'];
 }
 
 module.exports = {
