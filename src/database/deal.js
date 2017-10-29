@@ -1,5 +1,8 @@
 const { database } = require('../db');
 
+function getAllICO(admin) {
+  return database.ref(`admins/${admin}/ICO/`).once('value');
+}
 async function getICOByName(admin, ICOName) {
   let data = await database.ref(`admins/${admin}/ICO/${ICOName}`).once('value');
   return data.val();
@@ -21,5 +24,6 @@ function setContractAddress(admin, ICOName, address) {
 module.exports = {
   addICO,
   getICOByName,
-  setContractAddress
+  setContractAddress, 
+  getAllICO
 };

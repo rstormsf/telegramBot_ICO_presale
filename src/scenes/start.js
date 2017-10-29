@@ -14,7 +14,7 @@ startScene.enter(async (ctx) => {
       (isLinked) ? ['🔍 ICO Deals', '😎 Almost Closed <1hr'] : 
       ['🔍 ICO Deals', '😎 Almost Closed <1hr', '🔗 Link Account'],
       ['☸ Participate', '⭐️ My balance', '📢 Check Tx'],
-      isUserAdmin ? ['🤳 Manage Members', '💵 Add Funds', '👥 Add ICO', '📁 Manage Deals'] : []
+      isUserAdmin ? ['🤳 Manage Members', '💵 Add Funds', '📁 Manage Deals'] : []
     ])
     .oneTime()
     .resize()

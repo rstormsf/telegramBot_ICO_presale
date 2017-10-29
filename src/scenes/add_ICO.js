@@ -148,7 +148,8 @@ const addICOScene = new WizardScene('add-ico',
         await ctx.reply('Deploying Contract...')
         const contractAddress = await deployDealContract(ctx.from.username);
         await setContractAddress(ctx.from.username, icoName, contractAddress);
-        let receipt = await initializeDealContract(ctx.from.username, icoName, contractAddress);
+        console.log(contractAddress);
+        let receipt = await initializeDealContract(ctx.from.username, icoName);
         await ctx.reply('Your contract has been deployed at ' + contractAddress);
       } else {
         await ctx.reply(`Your ICO was not added`)

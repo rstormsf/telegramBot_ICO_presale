@@ -6,7 +6,7 @@ function getNakedAddress(address) {
 }
 
 module.exports = async (username) => {
-  const wallet = await web3.eth.accounts.wallet.create(1);
-  await setFundAddress(username, wallet[0].address);
-  await setFundPrivateKey(username, getNakedAddress(wallet[0].privateKey));
+  const account = await web3.eth.accounts.create();
+  await setFundAddress(username, account.address);
+  await setFundPrivateKey(username, getNakedAddress(account.privateKey));
 }

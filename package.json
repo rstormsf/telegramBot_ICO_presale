@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "dotenv": "^4.0.0",
+    "dotenv-json": "^1.0.0",
     "ethereumjs-tx": "^1.3.3",
     "ethereumjs-util": "^5.1.2",
     "firebase-admin": "^5.4.3",

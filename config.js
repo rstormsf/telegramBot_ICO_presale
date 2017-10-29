@@ -1,9 +1,7 @@
 const fs = require('fs');
-const dotenv = require('dotenv');
-
 
 if (process.env.NODE_ENV === 'dev') {
-  process.env = dotenv.parse(fs.readFileSync('.env.dev'));
+  require("dotenv-json")();
 }
 
 module.exports = {
@@ -11,5 +9,14 @@ module.exports = {
   ICOBOT_TOKEN: process.env.ICOBOT_TOKEN,
   PORT: process.env.PORT,
   FIREBASE_URL: process.env.FIREBASE_URL,
-  PRIVATE_KEY: process.env.PRIVATE_KEY,
+  private_key: process.env.private_key,
+  type: process.env.type,
+  project_id: process.env.project_id,
+  private_key_id: process.env.private_key_id,
+  client_email: process.env.client_email,
+  client_id: process.env.client_id,
+  auth_uri: process.env.auth_uri,
+  token_uri: process.env.token_uri,
+  auth_provider_x509_cert_url: process.env.auth_provider_x509_cert_url,
+  client_x509_cert_url: process.env.client_x509_cert_url
 };
