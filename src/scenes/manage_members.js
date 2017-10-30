@@ -18,7 +18,8 @@ const manageMembersScene = new WizardScene('manage-members',
       m.inlineKeyboard([
         m.callbackButton('Add', 'Add'),
         m.callbackButton('Remove', 'Remove'),
-        m.callbackButton('View All', 'View All')
+        m.callbackButton('View All', 'View All'),
+        m.callbackButton('Cancel', 'CANCEL')
       ])
     ));
     ctx.flow.wizard.next()
@@ -28,12 +29,16 @@ const manageMembersScene = new WizardScene('manage-members',
     switch(ctx.callbackQuery.data) {
       case 'Add':
         ctx.flow.state.action = 'Add';
-        ctx.reply(`Please provide telegram handle to add without @. Example: rstormsf `);
+        ctx.reply(`Please provide telegram handle to add without @. Example: rstormsf `, Markup.inlineKeyboard([
+          Markup.callbackButton('Cancel', 'CANCEL'),
+        ]).extra());
         ctx.flow.wizard.next()
         break;
       case 'Remove':
         ctx.flow.state.action = 'Remove';
-        ctx.reply(`Please provide telegram handle to remove without @. Example: rstormsf `);
+        ctx.reply(`Please provide telegram handle to remove without @. Example: rstormsf `, Markup.inlineKeyboard([
+          Markup.callbackButton('Cancel', 'CANCEL'),
+        ]).extra());
         ctx.flow.wizard.next()
         break;
       case 'View All':

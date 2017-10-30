@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 if (process.env.NODE_ENV === 'dev') {
   require("dotenv-json")();
 }

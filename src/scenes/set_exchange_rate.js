@@ -18,12 +18,17 @@ const setExchangeRateScene = new WizardScene('set-exchange-rate',
         let key = deal.key;
         ICOList.push(key);
       });
+      ICOList.push('Last');
       ctx.reply(`Select a Deal`, Extra.HTML().markup((m) => {
         return m.inlineKeyboard(ICOList.map((name) => {
-          return m.callbackButton(name, name)
+          if (name == 'Last') {
+            return m.callbackButton('Cancel', 'CANCEL');
+          } else {
+            return m.callbackButton(name, name)
+          }
         }));
       }));
-      await ctx.flow.wizard.next()
+    await ctx.flow.wizard.next()
     } 
   },
   async (ctx) => {

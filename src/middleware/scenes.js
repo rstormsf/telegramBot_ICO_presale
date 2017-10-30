@@ -23,6 +23,12 @@ flow.hears('💰 Add Deal', ctx => ctx.flow.enter('add-ico'));
 flow.hears('🔁 Set Exchange Rate', ctx => ctx.flow.enter('set-exchange-rate'));
 flow.hears('⬅️ Back', ctx => ctx.flow.enter('start'));
 
+flow.action('CANCEL', async (ctx) => {
+  await ctx.flow.leave();
+  await ctx.reply('Canceled');
+  await ctx.flow.enter('start');
+});
+
 flow.register(start);
 flow.register(addICOScene);
 flow.register(manageMembersScene);

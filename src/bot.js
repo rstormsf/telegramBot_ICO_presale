@@ -30,12 +30,6 @@ bot.use(firebaseSession(database.ref('sessions')));
 bot.use(logger);
 bot.use(scenes);
 
-
-bot.action('CANCEL', async (ctx) => {
-  await ctx.flow.leave();
-  await ctx.editMessageText('Canceled');
-});
-
 bot.catch((e) => {
   console.log(e);
 });

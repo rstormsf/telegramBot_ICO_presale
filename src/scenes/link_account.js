@@ -14,8 +14,9 @@ const linkAccountScene = new WizardScene('link-account',
         '   "msg": "459770067",\n' +
         '   "sig": "0xbd3f74a260491436c1d37b1...",\n' +
         '   "version": "2"\n' +
-      '}'
-    );
+      '}', Markup.inlineKeyboard([
+      Markup.callbackButton('Cancel', 'CANCEL'),
+    ]).extra());
     await ctx.flow.wizard.next()
   },
   async (ctx) => {

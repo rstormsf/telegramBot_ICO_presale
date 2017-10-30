@@ -22,7 +22,9 @@ const addICOScene = new WizardScene('add-ico',
       ctx.flow.leave();
     } else {
       await ctx.replyWithMarkdown('Lets add an ICO, Please' +
-        ' provide the name of the ICO:');
+        ' provide the name of the ICO:', Markup.inlineKeyboard([
+          Markup.callbackButton('Cancel', 'CANCEL'),
+        ]).extra());
       await ctx.flow.wizard.next()
     }
   },
@@ -48,7 +50,8 @@ const addICOScene = new WizardScene('add-ico',
           ' contributed <b>ETH</b> or <i>BTC</i>', Extra.HTML().markup((m) =>
             m.inlineKeyboard([
               m.callbackButton('ETH', 'ETH'),
-              m.callbackButton('BTC', 'BTC')
+              m.callbackButton('BTC', 'BTC'),
+              m.callbackButton('Cancel', 'CANCEL'),
           ])));
         await ctx.flow.wizard.next();              
       }
@@ -63,7 +66,9 @@ const addICOScene = new WizardScene('add-ico',
       if (!ctx.flow.state.currency && ctx.callbackQuery) {
         ctx.flow.state.currency = ctx.callbackQuery.data;
       }
-      ctx.reply(`Enter Max Cap in ${ctx.flow.state.currency}`)
+      ctx.reply(`Enter Max Cap in ${ctx.flow.state.currency}`, Markup.inlineKeyboard([
+        Markup.callbackButton('Cancel', 'CANCEL'),
+      ]).extra());
       await ctx.flow.wizard.next()
     }
   },
@@ -80,7 +85,9 @@ const addICOScene = new WizardScene('add-ico',
       }
       // need validation
       ctx.reply(`Start Date and Time in following format month/day/year` + 
-        ` hour:minute UTC time zone.\n Example: 12/31/2017 15:31`);
+        ` hour:minute UTC time zone.\n Example: 12/31/2017 15:31`, Markup.inlineKeyboard([
+        Markup.callbackButton('Cancel', 'CANCEL'),
+      ]).extra());
       await ctx.flow.wizard.next()
     }
   },
@@ -98,7 +105,9 @@ const addICOScene = new WizardScene('add-ico',
     } else {
       // need validation
       await ctx.reply(`End Date and Time in the following format ` + 
-        `month/day/year hour:minute UTC time zone.\n Example: 12/31/2017 15:31`)
+        `month/day/year hour:minute UTC time zone.\n Example: 12/31/2017 15:31`, Markup.inlineKeyboard([
+        Markup.callbackButton('Cancel', 'CANCEL'),
+      ]).extra());
       await ctx.flow.wizard.next()
     }
   },

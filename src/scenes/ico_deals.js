@@ -12,13 +12,18 @@ const icoDealsScene = new WizardScene('ico-deals',
       let key = syndicate.key;
       syndicateList.push(key);
     });
+    syndicateList.push('Last');
     console.log(syndicateList);
     let msg = `Currently you are a member of ${syndicateCount} syndicate(s)\n`;
     if (syndicateCount > 0) {
       ctx.reply(`Please select a syndicate`, Extra.HTML().markup((m) => {
         return m.inlineKeyboard(syndicateList.map((name) => {
-          return m.callbackButton(name, name)
-        }));
+          if (name == 'Last') {
+            return m.callbackButton('Cancel', 'CANCEL');
+          } else {
+            return m.callbackButton(name, name)
+          }
+        }))
       }));
       ctx.flow.wizard.next();
     } else {
