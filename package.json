@@ -16,6 +16,7 @@
     "firebase-admin": "^5.4.3",
     "moment": "^2.19.1",
     "now": "^8.3.10",
+    "p-iteration": "^1.1.5",
     "telegraf": "^3.14.0",
     "telegraf-flow": "^8.3.0",
     "telegraf-logger": "^2.0.2",

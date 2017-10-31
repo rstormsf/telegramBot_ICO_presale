@@ -9,6 +9,7 @@ startScene.enter(async (ctx) => {
   let isUserAdmin = await isAdmin(ctx.from.username);
   let isLinked = await isAccountLinked(ctx.from.username);
   console.log(isLinked);
+
   ctx.reply('Hi there, please choose an option', Markup
     .keyboard([
       (isLinked) ? ['🔍 ICO Deals', '😎 Almost Closed <1hr'] : 

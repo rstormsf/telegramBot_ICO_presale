@@ -4,6 +4,7 @@ const user = require('./middleware/user');
 const firebaseSession = require('telegraf-session-firebase');
 const logger = require('./middleware/logger');
 const scenes = require('./middleware/scenes');
+const isPrivate = require('./middleware/isPrivate');
 const { ICOBOT_TOKEN } = require('../config');
 const { database } = require('./db');
 
@@ -25,6 +26,7 @@ setImmediate(async () => {
 });
 
 bot.use(error);
+bot.use(isPrivate);
 bot.use(user);
 bot.use(firebaseSession(database.ref('sessions')));
 bot.use(logger);

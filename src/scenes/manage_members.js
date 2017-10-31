@@ -8,6 +8,20 @@ const {
   getMemberCount,
   getMemberByName 
 } = require('../database/member');
+const { isAccountLinked } = require('../database/linkAccount');
+const { forEach } = require('p-iteration');
+
+async function viewAllMembers(members) {
+  let output = '';
+  for (let member in members) {
+    let row = member;
+    row += ': IsLinked? ';
+    let isLinked = await isAccountLinked(member);
+    row += isLinked ? 'yes\n' : 'no\n';
+    output += row;
+  };
+  return output;
+}
 
 const manageMembersScene = new WizardScene('manage-members',
   // Step 0
@@ -43,13 +57,11 @@ const manageMembersScene = new WizardScene('manage-members',
         break;
       case 'View All':
         let members = await getMembers(ctx.from.username);
-        let memberList = [];
-        await members.forEach(function(member) {
-          let key = member.key;
-          memberList.push(key);
-        });
-        ctx.reply('Members: \n' + memberList.join(", "));
-        ctx.flow.leave();
+        let output = await viewAllMembers(members.val());
+        // console.log(members.val());
+        await ctx.reply('Members: \n' + output);
+        ctx.flow.wizard.selectStep(0);
+        await ctx.flow.reenter('manage-members');
         break;
       default:
         ctx.reply(`Incorrect input. Please try again `);
@@ -66,7 +78,7 @@ const manageMembersScene = new WizardScene('manage-members',
           ctx.reply(`${user} is already a member!`);
         } else {
           await addMember(ctx.from.username, user);
-          ctx.reply(`${user} added!`);          
+          ctx.reply(`${user} added!`);
         }
       } else if (ctx.flow.state.action == 'Remove') {
         if (!isMember) {
@@ -76,7 +88,8 @@ const manageMembersScene = new WizardScene('manage-members',
           ctx.reply(`${user} removed!`);      
         }
       }
-      ctx.flow.leave();
+      ctx.flow.wizard.selectStep(0);
+      await ctx.flow.reenter('manage-members');
     }
   }
 )
