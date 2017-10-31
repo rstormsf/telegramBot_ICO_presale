@@ -2,6 +2,8 @@ const TelegrafFlow = require('telegraf-flow')
 const { WizardScene } = TelegrafFlow;
 const { Extra, Markup } = require('telegraf')
 const { getSyndicateCount, getSyndicates } = require('../database/syndicate');
+const { getAllICO, getICOByName } = require('../database/deal');
+const getDealExchangeRate = require('../contract/getDealExchangeRate');
 
 const icoDealsScene = new WizardScene('ico-deals',
   async (ctx) => {
@@ -31,9 +33,47 @@ const icoDealsScene = new WizardScene('ico-deals',
       ctx.flow.leave()
     }
   },
-  (ctx) => {
-    ctx.flow.leave()
+  async (ctx) => {
+    if (ctx.callbackQuery) {
+      ctx.flow.state.syndicate = ctx.callbackQuery.data;
+      let ICOList = [];
+      let data = await getAllICO(ctx.flow.state.syndicate);
+      if (data == null) {
+        await ctx.reply(`${ctx.flow.state.syndicate} currently has no active deals`)
+        await ctx.flow.enter('start');
+      } else {
+        await data.forEach(function(deal) {
+          let key = deal.key;
+          ICOList.push(key);
+        });
+        ICOList.push('Last');
+        ctx.reply(`Select a Deal`, Extra.HTML().markup((m) => {
+          return m.inlineKeyboard(ICOList.map((name) => {
+            if (name == 'Last') {
+              return m.callbackButton('Cancel', 'CANCEL');
+            } else {
+              return m.callbackButton(name, name)
+            }
+          }));
+        }));
+        ctx.flow.wizard.next();
+      }
+    }
   },
+  async (ctx) => {
+    if (ctx.callbackQuery) {
+      ctx.flow.state.deal = ctx.callbackQuery.data;
+      let dealInfo = await getICOByName(ctx.flow.state.syndicate, ctx.flow.state.deal);
+      let exchangeRate = await getDealExchangeRate(ctx.flow.state.syndicate, ctx.flow.state.deal);
+      await ctx.reply(`Contract Address: ${dealInfo.contractAddress}\n` + 
+        `Max Cap: ${dealInfo.maxCap} eth\n` + 
+        `Start: ${dealInfo.startTime}\n` +
+        `End: ${dealInfo.endTime}\n` + 
+        `Exchange Rate: ${exchangeRate} eth`
+      );
+      await ctx.flow.leave();
+    }
+  }
 )
 
 module.exports = icoDealsScene;

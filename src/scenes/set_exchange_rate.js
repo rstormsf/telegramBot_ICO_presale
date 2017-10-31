@@ -2,7 +2,7 @@ const TelegrafFlow = require('telegraf-flow')
 const { WizardScene } = TelegrafFlow;
 const { Extra, Markup } = require('telegraf')
 const { isAccountLinked } = require('../database/linkAccount');
-const { doesFundExist, getFundAddress } = require('../database/fund');
+const { doesFundExist, getFundAddress, getFundBalance } = require('../database/fund');
 const { getAllICO } = require('../database/deal');
 const setDealExchangeRate = require('../contract/setDealExchangeRate');
 
@@ -10,9 +10,13 @@ const setExchangeRateScene = new WizardScene('set-exchange-rate',
   async (ctx) => {
     let ICOList = [];
     let data = await getAllICO(ctx.from.username);
+    let fundBalance = await getFundBalance(ctx.from.username);
     if (data == null) {
       await ctx.reply('You currently have no Deals.')
       await ctx.flow.enter('manage-deals');
+    } else if (fundBalance < 0.1) {
+      await ctx.reply('Insufficient funds. Please make a deposit to cover gas');
+      ctx.flow.leave();
     } else {
       await data.forEach(function(deal) {
         let key = deal.key;
