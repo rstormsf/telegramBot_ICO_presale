@@ -4,6 +4,7 @@ const { Extra, Markup } = require('telegraf')
 const { getSyndicateCount, getSyndicates } = require('../database/syndicate');
 const { getAllICO, getICOByName } = require('../database/deal');
 const getDealExchangeRate = require('../contract/getDealExchangeRate');
+var dateFormat = require('dateformat');
 
 const icoDealsScene = new WizardScene('ico-deals',
   async (ctx) => {
@@ -38,9 +39,11 @@ const icoDealsScene = new WizardScene('ico-deals',
       ctx.flow.state.syndicate = ctx.callbackQuery.data;
       let ICOList = [];
       let data = await getAllICO(ctx.flow.state.syndicate);
-      if (data == null) {
+      console.log(data.val());
+      if (data.val() == null) {
         await ctx.reply(`${ctx.flow.state.syndicate} currently has no active deals`)
-        await ctx.flow.enter('start');
+        ctx.flow.wizard.selectStep(0);
+        await ctx.flow.reenter('ico-deals');
       } else {
         await data.forEach(function(deal) {
           let key = deal.key;
@@ -64,12 +67,18 @@ const icoDealsScene = new WizardScene('ico-deals',
     if (ctx.callbackQuery) {
       ctx.flow.state.deal = ctx.callbackQuery.data;
       let dealInfo = await getICOByName(ctx.flow.state.syndicate, ctx.flow.state.deal);
+      let startTime = new Date(dealInfo.startTime);
+      let endTime = new Date(dealInfo.endTime);
+      startTime = dateFormat(startTime, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+      endTime = dateFormat(endTime, "dddd, mmmm dS, yyyy, h:MM:ss TT");
       let exchangeRate = await getDealExchangeRate(ctx.flow.state.syndicate, ctx.flow.state.deal);
-      await ctx.reply(`Contract Address: ${dealInfo.contractAddress}\n` + 
+      exchangeRate = exchangeRate == 0 ? 'Not Set' : exchangeRate + ' eth';
+      await ctx.reply(`${ctx.flow.state.deal} Deal\n\n` + 
+        `Address: ${dealInfo.contractAddress}\n` + 
         `Max Cap: ${dealInfo.maxCap} eth\n` + 
-        `Start: ${dealInfo.startTime}\n` +
-        `End: ${dealInfo.endTime}\n` + 
-        `Exchange Rate: ${exchangeRate} eth`
+        `Start: ${startTime}\n` +
+        `End: ${endTime}\n` + 
+        `Exchange Rate: ${exchangeRate}`
       );
       await ctx.flow.leave();
     }

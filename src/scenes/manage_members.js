@@ -14,9 +14,9 @@ async function viewAllMembers(members) {
   let output = '';
   for (let member in members) {
     let row = member;
-    row += ': IsLinked? ';
+    // row += ': IsLinked? ';
     let isLinked = await isAccountLinked(member);
-    row += isLinked ? 'yes\n' : 'no\n';
+    row += isLinked ? ' / yes\n' : ' / no\n';
     output += row;
   };
   return output;
@@ -57,7 +57,7 @@ const manageMembersScene = new WizardScene('manage-members',
       case 'View All':
         let members = await getMembers(ctx.from.username);
         let output = await viewAllMembers(members.val());
-        await ctx.reply('Members: \n' + output);
+        await ctx.reply('Member / Linked?\n' + output);
         ctx.flow.wizard.selectStep(0);
         await ctx.flow.reenter('manage-members');
         break;
