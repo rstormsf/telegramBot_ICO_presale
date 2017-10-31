@@ -38,10 +38,4 @@ async function initializeDealContract(username, icoName) {
   return receipt;
 }
 
-// async function test() {
-//   let receipt = await initializeDealContract('ryan_le', 'test1');
-//   console.log(receipt);
-// }
-
-// test();
 module.exports = initializeDealContract;

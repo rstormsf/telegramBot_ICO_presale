@@ -6,14 +6,12 @@ async function isAccountLinked(username) {
 }
 
 async function linkAddressToAccount(username, eth_address) {
-  await database.ref(`users/${username}/address`).set({
-    address: eth_address,
-  });
+  await database.ref(`users/${username}/address`).set(eth_address);
 }
 
 async function getAccountAddress(username) {
   const data = await database.ref(`users/${username}/address`).once('value');
-  return data.val()['address'];
+  return data.val();
 }
 
 module.exports = {

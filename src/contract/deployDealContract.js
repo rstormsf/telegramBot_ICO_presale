@@ -1,10 +1,7 @@
-var Tx = require('ethereumjs-tx');
 const { web3 } = require('../w3');
+var Tx = require('ethereumjs-tx');
 var abi = require('../../contracts/abi/deal.json');
-  // const bytecode = await fs.readFile(process.cwd() + 
-  //   '/contracts/abi/bytecode.txt', (err) => console.log(err));
 const bytecode = require('../../contracts/abi/bytecode');
-
 const { getFundAddress, getFundPrivateKey } = require('../database/fund');
 
 async function deployDealContract(username) {
@@ -29,12 +26,5 @@ async function deployDealContract(username) {
   receipt = await web3.eth.sendSignedTransaction('0x' + serializedTx.toString('hex'))
   return receipt['contractAddress'];
 }
-
-// async function test() {
-//   let address = await deployDealContract('ryan_le');
-//   console.log(address);
-// }
-
-// test();
 
 module.exports = deployDealContract;

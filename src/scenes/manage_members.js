@@ -9,7 +9,6 @@ const {
   getMemberByName 
 } = require('../database/member');
 const { isAccountLinked } = require('../database/linkAccount');
-const { forEach } = require('p-iteration');
 
 async function viewAllMembers(members) {
   let output = '';
@@ -58,7 +57,6 @@ const manageMembersScene = new WizardScene('manage-members',
       case 'View All':
         let members = await getMembers(ctx.from.username);
         let output = await viewAllMembers(members.val());
-        // console.log(members.val());
         await ctx.reply('Members: \n' + output);
         ctx.flow.wizard.selectStep(0);
         await ctx.flow.reenter('manage-members');
