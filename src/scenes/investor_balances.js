@@ -38,7 +38,7 @@ const investorBalancesScene = new WizardScene('investor-balances',
       let icoName = ctx.callbackQuery.data;
       let members = await getMembers(ctx.from.username);
       let output = '';
-      for (let member in members.val()) {
+      for (let member in members) {
         let accountAddress = await getAccountAddress(member);
         if (accountAddress) {
           let balance = await getInvestorBalance(ctx.from.username, icoName, accountAddress);

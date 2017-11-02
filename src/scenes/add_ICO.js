@@ -2,10 +2,12 @@ const { WizardScene, Scene} = require('telegraf-flow');
 const { Extra, Markup } = require('telegraf');
 const moment = require('moment');
 const { getICOByName, addICO, setContractAddress } = require('../database/deal');
+const { getWhitelistAddress, setWhitelistAddress } = require('../database/whitelist');
+const fillWhitelist = require('../helpers/fillWhitelist');
 const getFundBalance = require('../helpers/getFundBalance');
+const deployWhitelist = require('../contract/deployWhitelist');
 const deployDealContract = require('../contract/deployDealContract');
 const initializeDealContract = require('../contract/initializeDealContract');
-
 var toType = function(obj) {
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
 }
@@ -16,11 +18,18 @@ const addICOScene = new WizardScene('add-ico',
     ctx.flow.state.startTime = null;
     ctx.flow.state.endTime = null;
     ctx.flow.state.icoName = null;
-    fundBalance = await getFundBalance(ctx.from.username);
+    let fundBalance = await getFundBalance(ctx.from.username);
     if (fundBalance < 0.1) {
       await ctx.reply('Insufficient funds, please make a deposit to add an ICO');
       ctx.flow.leave();
     } else {
+      let whitelistAddress = await getWhitelistAddress(ctx.from.username);
+      if (!whitelistAddress) {
+        await ctx.reply('Creating Whitelist...');
+        whitelistAddress = await deployWhitelist(ctx.from.username);
+        await setWhitelistAddress(ctx.from.username, whitelistAddress);
+        await ctx.reply('Done');
+      }
       await ctx.replyWithMarkdown('Lets add an ICO, Please' +
         ' provide the name of the ICO:', Markup.inlineKeyboard([
           Markup.callbackButton('Cancel', 'CANCEL'),
@@ -158,7 +167,9 @@ const addICOScene = new WizardScene('add-ico',
         const contractAddress = await deployDealContract(ctx.from.username);
         await setContractAddress(ctx.from.username, icoName, contractAddress);
         let receipt = await initializeDealContract(ctx.from.username, icoName);
-        await ctx.reply('Your contract has been deployed at ' + contractAddress);
+        console.log(receipt);
+        await ctx.replyWithMarkdown(`Your contract has been deployed at\n` + 
+          `[${contractAddress}](https://kovan.etherscan.io/address/${contractAddress})`)
       } else {
         await ctx.reply(`Your ICO was not added`)
       }

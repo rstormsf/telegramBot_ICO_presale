@@ -1,21 +1,20 @@
 const { web3 } = require('../w3');
 var Tx = require('ethereumjs-tx');
-var abi = require('../../contracts/abi/presale.abi.json');
+var abi = require('../../contracts/abi/whitelist.abi.json');
 const { getFundAddress, getFundPrivateKey } = require('../database/fund');
-const { getICOByName } = require('../database/deal');
+const { getWhitelistAddress } = require('../database/whitelist');
 
-async function setDealExchangeRate(username, icoName, rate) {
-  let fundAddress = await getFundAddress(username);
-  let fundPrivateKey = await getFundPrivateKey(username);
-  let icoData = await getICOByName(username, icoName);
+async function removeMemberFromWhitelist(manager, member) {
+  let fundAddress = await getFundAddress(manager);
+  let fundPrivateKey = await getFundPrivateKey(manager);
   var privateKey = new Buffer(fundPrivateKey, 'hex');
-  
-  let contract = new web3.eth.Contract(abi, icoData['contractAddress']);
-  let instance = await contract.methods.setExchangeRate(rate);
+  let whitelistAddress = await getWhitelistAddress(manager);
+  let contract = new web3.eth.Contract(abi, whitelistAddress);
+  let instance = await contract.methods.removeInvestor(member);
   let data = instance.encodeABI();
   var txcount = await web3.eth.getTransactionCount(fundAddress);
   var rawTx = {
-      to: icoData['contractAddress'],
+      to: whitelistAddress, 
       nonce: web3.utils.toHex(txcount),
       gasPrice: web3.utils.toHex(1000099000),
       gasLimit: 123123 * 4,
@@ -28,4 +27,4 @@ async function setDealExchangeRate(username, icoName, rate) {
   return receipt;
 }
 
-module.exports = setDealExchangeRate;
+module.exports = removeMemberFromWhitelist;

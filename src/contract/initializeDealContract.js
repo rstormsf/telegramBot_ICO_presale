@@ -1,16 +1,17 @@
 const { web3 } = require('../w3');
 var Tx = require('ethereumjs-tx');
-var abi = require('../../contracts/abi/deal.json');
+var abi = require('../../contracts/abi/presale.abi.json');
 const { getAccountAddress } = require('../database/linkAccount');
 const { getFundAddress, getFundPrivateKey } = require('../database/fund');
 const { getICOByName } = require('../database/deal');
+const { getWhitelistAddress } = require('../database/whitelist');
 
 async function initializeDealContract(username, icoName) {
   let fundAddress = await getFundAddress(username);
   let fundPrivateKey = await getFundPrivateKey(username);
   let ownerAddress = await getAccountAddress(username);
   let icoData = await getICOByName(username, icoName);
-
+  let whitelistAddress = await getWhitelistAddress(username);
   var privateKey = new Buffer(fundPrivateKey, 'hex');
   let startTime = new Date(icoData['startTime']).getTime()/1000|0;
   let endTime = new Date(icoData['endTime']).getTime()/1000|0;
@@ -19,10 +20,11 @@ async function initializeDealContract(username, icoName) {
     ownerAddress, 
     startTime, 
     endTime, 
-    web3.utils.toWei(icoData['maxCap'], 'ether')
+    web3.utils.toWei(icoData['maxCap'], 'ether'), 
+    whitelistAddress
   );
   let gasEstimate = await instance.estimateGas();
-  data = instance.encodeABI();
+  let data = instance.encodeABI();
   var txcount = await web3.eth.getTransactionCount(fundAddress);
   var rawTx = {
       to: icoData['contractAddress'],

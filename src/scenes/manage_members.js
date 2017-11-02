@@ -8,34 +8,52 @@ const {
   getMemberCount,
   getMemberByName 
 } = require('../database/member');
-const { isAccountLinked } = require('../database/linkAccount');
+const { getAccountAddress } = require('../database/linkAccount');
+const getFundBalance = require('../helpers/getFundBalance');
+const { getWhitelistAddress, setWhitelistAddress } = require('../database/whitelist');
+const deployWhitelist = require('../contract/deployWhitelist');
+const addMemberToWhitelist = require('../contract/addMember');
+const removeMemberFromWhitelist = require('../contract/removeMember');
 
 async function viewAllMembers(members) {
   let output = '';
   for (let member in members) {
-    let row = member;
-    // row += ': IsLinked? ';
-    let isLinked = await isAccountLinked(member);
-    row += isLinked ? ' / yes\n' : ' / no\n';
+    let row = `${member}\n`;
+    // let isLinked = await getAccountAddress(member);
+    // row += isLinked ? ' / yes\n' : ' / no\n';
     output += row;
   };
-  return output;
+  return (output == '') ? 'Empty' : output;
 }
 
 const manageMembersScene = new WizardScene('manage-members',
   // Step 0
   async (ctx) => {
-    const memberCount = await getMemberCount(ctx.from.username);
-    let msg = `Currently have ${memberCount} members in your syndicate\n`;
-    ctx.reply(`${msg}Please choose your action: `, Extra.HTML().markup((m) =>
-      m.inlineKeyboard([
-        m.callbackButton('Add', 'Add'),
-        m.callbackButton('Remove', 'Remove'),
-        m.callbackButton('View All', 'View All'),
-        m.callbackButton('Cancel', 'CANCEL')
-      ])
-    ));
-    ctx.flow.wizard.next()
+    let fundBalance = await getFundBalance(ctx.from.username);
+    if (fundBalance < 0.1) {
+      await ctx.reply('Insufficient funds. Please make a deposit to cover gas');
+      ctx.flow.leave();
+    } else {
+      let whitelistAddress = await getWhitelistAddress(ctx.from.username);
+      if (!whitelistAddress) {
+        await ctx.reply('Creating Whitelist...');
+        whitelistAddress = await deployWhitelist(ctx.from.username);
+        await setWhitelistAddress(ctx.from.username, whitelistAddress);
+        await ctx.reply('Done');
+      }
+      ctx.flow.state.whitelistAddress = whitelistAddress;
+      const memberCount = await getMemberCount(ctx.from.username);
+      let msg = `Currently have ${memberCount} members in your syndicate\n`;
+      await ctx.reply(`${msg}Please choose your action: `, Extra.HTML().markup((m) =>
+        m.inlineKeyboard([
+          m.callbackButton('Add', 'Add'),
+          m.callbackButton('Remove', 'Remove'),
+          m.callbackButton('View All', 'View All'),
+          m.callbackButton('Cancel', 'CANCEL')
+        ])
+      ));
+      await ctx.flow.wizard.next();      
+    }        
   },
   // Step 1
   async (ctx) => {
@@ -56,8 +74,8 @@ const manageMembersScene = new WizardScene('manage-members',
         break;
       case 'View All':
         let members = await getMembers(ctx.from.username);
-        let output = await viewAllMembers(members.val());
-        await ctx.reply('Member / Linked?\n' + output);
+        let output = await viewAllMembers(members);
+        await ctx.reply('Members\n' + output);
         ctx.flow.wizard.selectStep(0);
         await ctx.flow.reenter('manage-members');
         break;
@@ -75,15 +93,25 @@ const manageMembersScene = new WizardScene('manage-members',
         if (isMember) {
           ctx.reply(`${user} is already a member!`);
         } else {
-          await addMember(ctx.from.username, user);
-          ctx.reply(`${user} added!`);
+          let userAddress = await getAccountAddress(user);
+          if (!userAddress) {
+            await ctx.reply(`${user} needs to link their account to be a member`)
+          } else {
+            await ctx.reply(`Adding ${user} to Whitelist...`)
+            await addMemberToWhitelist(ctx.from.username, userAddress);
+            await addMember(ctx.from.username, user);
+            await ctx.reply(`${user} added!`);
+          }
         }
       } else if (ctx.flow.state.action == 'Remove') {
         if (!isMember) {
           ctx.reply(`${user} is not a member.`);          
         } else {
+          let userAddress = await getAccountAddress(user);
+          await ctx.reply(`Removing ${user} from Whitelist...`)
+          await removeMemberFromWhitelist(ctx.from.username, userAddress);
           await removeMember(ctx.from.username, user);
-          ctx.reply(`${user} removed!`);      
+          await ctx.reply(`${user} removed!`);      
         }
       }
       ctx.flow.wizard.selectStep(0);

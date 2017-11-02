@@ -1,7 +1,8 @@
 const { database } = require('../db');
 
-function getMembers(admin) {
-  return database.ref(`admins/${admin}/members`).once('value');
+async function getMembers(admin) {
+  let members = await database.ref(`admins/${admin}/members`).once('value');
+  return members.val();
 }
 
 function getMemberByName(admin, user) {
@@ -15,12 +16,8 @@ async function getMemberCount(admin) {
 }
 
 async function addMember(admin, user) {
-  await database.ref(`users/${user}/syndicates/${admin}`).set({
-    isMember: true,
-  });
-  await database.ref(`admins/${admin}/members/${user}`).set({
-    isMember: true,
-  });
+  await database.ref(`users/${user}/syndicates/${admin}`).set(true);
+  await database.ref(`admins/${admin}/members/${user}`).set(true);
 }
 
 async function removeMember(admin, user) {
