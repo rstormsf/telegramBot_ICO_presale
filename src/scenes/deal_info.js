@@ -4,6 +4,7 @@ const { Extra, Markup } = require('telegraf')
 const { getSyndicateCount, getSyndicates } = require('../database/syndicate');
 const { getAllICO, getICOByName } = require('../database/deal');
 const getDealExchangeRate = require('../contract/getDealExchangeRate');
+const getRemainingCap = require('../contract/getRemainingCap');
 const { getMembers } = require('../database/member');
 const { getAccountAddress } = require('../database/linkAccount');
 const getInvestorBalance = require('../contract/getInvestorBalance');
@@ -56,12 +57,14 @@ const dealInfoScene = new WizardScene('deal-info',
         }
       };
       exchangeRate = exchangeRate == 0 ? 'Not Set' : exchangeRate + ' eth';
+      let remainingCap = await getRemainingCap(ctx.from.username, deal);
       await ctx.reply(`${deal}\n\n` + 
         `Address: ${dealInfo.contractAddress}\n` + 
         `Max Cap: ${dealInfo.maxCap} eth\n` + 
+        `Remaining Cap: ${remainingCap} eth\n` + 
+        `Exchange Rate: ${exchangeRate}\n` +
         `Start: ${startTime}\n` +
-        `End: ${endTime}\n` + 
-        `Exchange Rate: ${exchangeRate}\n\n` +
+        `End: ${endTime}\n\n` + 
         'Balances:\n' + (balances == '' ? 'Empty' : balances)
       );
       ctx.flow.wizard.selectStep(0);

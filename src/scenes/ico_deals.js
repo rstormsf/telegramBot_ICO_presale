@@ -3,6 +3,7 @@ const { WizardScene } = TelegrafFlow;
 const { Extra, Markup } = require('telegraf')
 const { getSyndicateCount, getSyndicates } = require('../database/syndicate');
 const { getAllICO, getICOByName } = require('../database/deal');
+const getRemainingCap = require('../contract/getRemainingCap');
 const getDealExchangeRate = require('../contract/getDealExchangeRate');
 var dateFormat = require('dateformat');
 
@@ -71,12 +72,14 @@ const icoDealsScene = new WizardScene('ico-deals',
       endTime = dateFormat(endTime, "dddd, mmmm dS, yyyy, h:MM:ss TT");
       let exchangeRate = await getDealExchangeRate(ctx.flow.state.syndicate, ctx.flow.state.deal);
       exchangeRate = exchangeRate == 0 ? 'Not Set' : exchangeRate + ' eth';
+      let remainingCap = await getRemainingCap(ctx.flow.state.syndicate, ctx.flow.state.deal);
       await ctx.reply(`${ctx.flow.state.deal} Deal\n\n` + 
         `Address: ${dealInfo.contractAddress}\n` + 
         `Max Cap: ${dealInfo.maxCap} eth\n` + 
-        `Start: ${startTime}\n` +
-        `End: ${endTime}\n` + 
-        `Exchange Rate: ${exchangeRate}`
+        `Remaining Cap: ${remainingCap} eth\n` +
+        `Exchange Rate: ${exchangeRate}\n` +
+        `Start: ${startTime}\n` + 
+        `End: ${endTime}\n`
       );
       await ctx.flow.leave();
     }
