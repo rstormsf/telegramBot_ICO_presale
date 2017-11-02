@@ -39,7 +39,9 @@ const setExchangeRateScene = new WizardScene('set-exchange-rate',
   async (ctx) => {
     if (ctx.callbackQuery) {
       ctx.flow.state.icoName = ctx.callbackQuery.data;
-      await ctx.reply('Enter exchange rate in eth for ' + ctx.flow.state.icoName);
+      await ctx.reply('Enter exchange rate in eth for ' + ctx.flow.state.icoName, Markup.inlineKeyboard([
+        Markup.callbackButton('Cancel', 'CANCEL'),
+      ]).extra());
       await ctx.flow.wizard.next();   
     }
   }, 

@@ -6,7 +6,7 @@ manageDealsScene.enter(async (ctx) => {
   ctx.reply('Manage Deals', Markup
     .keyboard([
       ['⬅️ Back', '🔁 Set Exchange Rate'],
-      ['📗 Investor Balances', '💰 Add Deal']
+      ['🔍 Deal Info', '💰 Add Deal']
     ])
     .oneTime()
     .resize()
