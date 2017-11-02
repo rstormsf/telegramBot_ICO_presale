@@ -2,9 +2,10 @@ const TelegrafFlow = require('telegraf-flow')
 const { WizardScene } = TelegrafFlow;
 const { Extra, Markup } = require('telegraf')
 const { isAccountLinked } = require('../database/linkAccount');
-const { doesFundExist, getFundAddress, getFundBalance } = require('../database/fund');
+const { doesFundExist, getFundAddress } = require('../database/fund');
 const { getAllICO } = require('../database/deal');
 const setDealExchangeRate = require('../contract/setDealExchangeRate');
+const getFundBalance = require('../helpers/getFundBalance');
 
 const setExchangeRateScene = new WizardScene('set-exchange-rate',
   async (ctx) => {

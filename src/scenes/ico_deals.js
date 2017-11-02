@@ -16,7 +16,6 @@ const icoDealsScene = new WizardScene('ico-deals',
       syndicateList.push(key);
     });
     syndicateList.push('Last');
-    console.log(syndicateList);
     let msg = `Currently you are a member of ${syndicateCount} syndicate(s)\n`;
     if (syndicateCount > 0) {
       ctx.reply(`Please select a syndicate`, Extra.HTML().markup((m) => {
@@ -39,7 +38,6 @@ const icoDealsScene = new WizardScene('ico-deals',
       ctx.flow.state.syndicate = ctx.callbackQuery.data;
       let ICOList = [];
       let data = await getAllICO(ctx.flow.state.syndicate);
-      console.log(data.val());
       if (data.val() == null) {
         await ctx.reply(`${ctx.flow.state.syndicate} currently has no active deals`)
         ctx.flow.wizard.selectStep(0);
