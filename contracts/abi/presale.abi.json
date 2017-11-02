@@ -87,6 +87,10 @@
       {
         "name": "_cap",
         "type": "uint256"
+      },
+      {
+        "name": "_whitelist",
+        "type": "address"
       }
     ],
     "name": "initialize",
@@ -113,6 +117,20 @@
     "constant": true,
     "inputs": [],
     "name": "owner",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "whitelist",
     "outputs": [
       {
         "name": "",
@@ -177,6 +195,20 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "totalInvestedInWei",
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
   },
   {
