@@ -5,6 +5,7 @@ const icoDealsScene = require('../scenes/ico_deals');
 const manageMembersScene = require('../scenes/manage_members');
 const linkAccountScene = require('../scenes/link_account');
 const manageDealsScene = require('../scenes/manage_deals');
+const myBalancesScene = require('../scenes/my_balances');
 const dealInfoScene = require('../scenes/deal_info');
 const setExchangeRateScene = require('../scenes/set_exchange_rate');
 const investorBalancesScene = require('../scenes/investor_balances');
@@ -17,7 +18,7 @@ flow.command('start', async (ctx, next) => {
 });
 
 flow.hears('🤳 Manage Members', ctx => ctx.flow.enter('manage-members'));
-// flow.hears('📗 Investor Balances', ctx => ctx.flow.enter('investor-balances'));
+flow.hears('⭐️ My balances', ctx => ctx.flow.enter('my-balances'));
 flow.hears('🔍 ICO Deals', ctx => ctx.flow.enter('ico-deals'));
 flow.hears('🔍 Deal Info', ctx => ctx.flow.enter('deal-info'));
 flow.hears('🔗 Link Account', ctx => ctx.flow.enter('link-account'));
@@ -43,5 +44,6 @@ flow.register(manageDealsScene);
 flow.register(setExchangeRateScene);
 flow.register(investorBalancesScene);
 flow.register(dealInfoScene);
+flow.register(myBalancesScene);
 
 module.exports = flow.middleware();

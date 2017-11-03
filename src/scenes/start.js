@@ -12,8 +12,8 @@ startScene.enter(async (ctx) => {
 
   ctx.reply('Hi there, please choose an option', Markup
     .keyboard([
-      (isLinked) ? ['🔍 ICO Deals'] : ['🔗 Link Account'],
-      // ['☸ Participate', '⭐️ My balance', '📢 Check Tx'],
+      (isLinked) ? ['🔍 ICO Deals', '⭐️ My balances'] : ['🔗 Link Account'],
+      // ['☸ Participate', '⭐️ My balances', '📢 Check Tx'],
       (isLinked && isUserAdmin) ? ['🤳 Manage Members', '💵 Add Funds', '📁 Manage Deals'] : []
     ])
     .oneTime()

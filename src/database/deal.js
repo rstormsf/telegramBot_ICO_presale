@@ -1,8 +1,9 @@
 const { database } = require('../db');
 
-function getAllICO(admin) {
+async function getAllICO(admin) {
   return database.ref(`admins/${admin}/ICO/`).once('value');
 }
+
 async function getICOByName(admin, ICOName) {
   let data = await database.ref(`admins/${admin}/ICO/${ICOName}`).once('value');
   return data.val();
