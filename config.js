@@ -3,7 +3,8 @@ if (process.env.NODE_ENV === 'dev') {
 }
 
 module.exports = {
-  NODE_ENV: process.env.NODE_ENV,
+  NODE_ENV: process.env.NODE_ENV, 
+  MASTER_KEY: process.env.MASTER_KEY, 
   ICOBOT_TOKEN: process.env.ICOBOT_TOKEN,
   KOVAN_RPC_URL: process.env.KOVAN_RPC_URL,
   PORT: process.env.PORT,

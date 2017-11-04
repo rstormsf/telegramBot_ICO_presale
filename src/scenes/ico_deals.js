@@ -71,7 +71,7 @@ const icoDealsScene = new WizardScene('ico-deals',
       startTime = dateFormat(startTime, "dddd, mmmm dS, yyyy, h:MM:ss TT");
       endTime = dateFormat(endTime, "dddd, mmmm dS, yyyy, h:MM:ss TT");
       let exchangeRate = await getDealExchangeRate(ctx.flow.state.syndicate, ctx.flow.state.deal);
-      exchangeRate = exchangeRate == 0 ? 'Not Set' : exchangeRate + ' eth';
+      exchangeRate = (exchangeRate == 0) ? 'Not Set' : exchangeRate + ' eth';
       let remainingCap = await getRemainingCap(ctx.flow.state.syndicate, ctx.flow.state.deal);
       await ctx.reply(`${ctx.flow.state.deal} Deal\n\n` + 
         `Address: ${dealInfo.contractAddress}\n` + 

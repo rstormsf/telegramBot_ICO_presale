@@ -1,4 +1,5 @@
 const { database } = require('../db');
+const { encrypt, decrypt } = require('../helpers/encrypt');
 
 async function doesFundExist(username) {
   const data = await database.ref(`admins/${username}/fund`).once('value');
@@ -10,7 +11,8 @@ async function setFundAddress(username, address) {
 }
 
 async function setFundPrivateKey(username, privateKey) {
-  return database.ref(`admins/${username}/fund/privateKey`).set(privateKey);
+  let encryptedKey = encrypt(privateKey);
+  return database.ref(`admins/${username}/fund/privateKey`).set(encryptedKey);
 }
 
 async function getFundAddress(username) {
@@ -20,7 +22,8 @@ async function getFundAddress(username) {
 
 async function getFundPrivateKey(username) {
   const data = await database.ref(`admins/${username}/fund/privateKey`).once('value');
-  return data.val();
+  let decryptedKey = decrypt(data.val());
+  return decryptedKey;
 }
 
 module.exports = {

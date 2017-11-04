@@ -34,7 +34,7 @@ const linkAccountScene = new WizardScene('link-account',
       if (isValidSig && isValidMsg) {
         await linkAddressToAccount(ctx.from.username, json.address);
         await ctx.reply('Account succesfully linked!');
-        await ctx.flow.leave();
+        await ctx.flow.enter('start');
       } else {
         await ctx.reply('Invalid signature');
         ctx.flow.wizard.selectStep(0);

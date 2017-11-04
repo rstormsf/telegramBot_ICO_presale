@@ -11,7 +11,6 @@ const getDealExchangeRate = require('../contract/getDealExchangeRate');
 async function getBalances(syndicates, investorAddress) {
   let output = '';
   for (syndicate in syndicates.val()) {
-    console.log(syndicate);
     let icos = await getAllICO(syndicate);
     let row = await `${syndicate}:\n`;
     let tmp = '';
@@ -20,7 +19,7 @@ async function getBalances(syndicates, investorAddress) {
       let exchangeRate = await getDealExchangeRate(syndicate, ico);
       if (balance > 0) {
         if (exchangeRate > 0) {
-          let tokens = (balance / exchangeRate).toPrecision(3);
+          let tokens = (balance * exchangeRate).toPrecision(3);
           tmp += await `    ${ico}: ${balance} eth -> ${tokens} tokens\n`;
         } else {
           tmp += await `    ${ico}: ${balance} eth\n`;
